@@ -35,4 +35,4 @@ class Button:
         """set the size of the pixel for the pen options"""
 
     def get_color(self):
-        print(self.color)
+        return self.color

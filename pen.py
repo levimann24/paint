@@ -1,22 +1,38 @@
 import pygame
-import settings
+import color
+import pygame.sprite
 
 
-class Pen:
+class Pen(pygame.sprite.Sprite):
     """class to create a pen"""
 
     def __init__(self, p_game):
+        # initialize parent sprite class
+        super().__init__()
+
         self.settings = p_game.settings
         self.screen = p_game.screen
         self.screen_rect = self.screen.get_rect()
-        # checking if mous is held down
+        # checking if mouse is held down
         self.click = False
+        self.height = 5
+        self.width = 5
+        self.color = (0, 0, 0)
+        self.draw = []
 
     def set_pen_color(self, color):
-        pass
+        self.color = color
 
     def set_pen_size(self, size):
         pass
 
-    def pen_draw(self):
-        pass
+    def pen_draw(self, x, y):
+        self.rect = pygame.Rect((x-self.width/2), (y -
+                                                   self.height/2), self.width, self.height)
+        # self.draw.append(pygame.Rect(
+        #     (x-self.width/2), (y-self.height/2), self.width, self.height))
+
+    def update_pen(self):
+        # if self.click:
+        #     for i in self.draw:
+        pygame.draw.rect(self.screen, self.color, self.rect)
