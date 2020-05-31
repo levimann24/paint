@@ -30,3 +30,9 @@ class Button:
         """Draw button to screen"""
         pygame.draw.rect(self.screen, self.color, self.rect)
         pygame.draw.rect(self.screen, self.border_col, self.border_rect, 3)
+
+    def set_size(self, x, y):
+        """set the size of the pixel for the pen options"""
+
+    def get_color(self):
+        print(self.color)

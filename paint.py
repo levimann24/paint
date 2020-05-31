@@ -18,7 +18,8 @@ class PaintGame:
         pygame.display.set_caption("Paint!")
 
         # initialize different buttons
-        self.initialize_buttons()
+        self.color_buttons = []
+        self.initialize_color_buttons()
 
     def on_event(self):
         for event in pygame.event.get():
@@ -56,20 +57,26 @@ class PaintGame:
 #  methods for excecution
 # ----------------------------------------------
     def check_click(self, mouse_pos):
-        button_clicked = self.b_red.rect.collidepoint(mouse_pos)
-        if button_clicked:
-            print("Red button clicked!!!")
+        for button in self.color_buttons:
+            button_clicked = button.rect.collidepoint(mouse_pos)
+            if button_clicked:
+                button.get_color()
+                # ----------------------------------------------
 
-
-# ----------------------------------------------
-
-    def initialize_buttons(self):
-        self.b_red = buttons.Button(
-            self, self.screen_width/2, self.screen_height/2)
-        self.b_red.set_color('red')
+    def initialize_color_buttons(self):
+        colors = ['black', 'red', 'blue', 'green', 'white']
+        for i in range(0, len(colors)):
+            self.color_buttons.append(buttons.Button(
+                self, self.screen_width/2 + (self.settings.b_width+5)*i, 3*self.screen_height/4))
+            self.color_buttons[i].set_color(colors[i])
+        # self.b_red = buttons.Button(
+        #     self, self.screen_width/2, 3*self.screen_height/4)
+        # self.b_red.set_color('red')
 
     def draw_buttons(self):
-        self.b_red.draw_button()
+        for button in self.color_buttons:
+            button.draw_button()
+        # self.b_red.draw_button()
 
 # ----------------------------------------------
 
