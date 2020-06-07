@@ -17,7 +17,7 @@ class Pen(pygame.sprite.Sprite):
         self.height = 5
         self.width = 5
         self.color = (0, 0, 0)
-        self.draw = []
+        #self.draw = []
 
     def set_pen_color(self, color):
         """set the pen color"""
@@ -30,9 +30,11 @@ class Pen(pygame.sprite.Sprite):
 
     def pen_draw(self, x, y):
         """initialize the mark on the screen"""
+        self.y = y
         self.rect = pygame.Rect((x-self.width/2), (y -
                                                    self.height/2), self.width, self.height)
 
     def update_pen(self):
         """draw the mark to the screen"""
-        pygame.draw.rect(self.screen, self.color, self.rect)
+        if self.y < 3*self.settings.HEIGHT/4:
+            pygame.draw.rect(self.screen, self.color, self.rect)

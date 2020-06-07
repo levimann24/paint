@@ -28,6 +28,7 @@ class Button:
             'green': (0, 255, 0),
             'black': (0, 0, 0),
             'white': (255, 255, 255),
+            'gray': (200, 200, 200)
         }
         if color in selection:
             self.color = selection[color]

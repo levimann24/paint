@@ -27,6 +27,9 @@ class PaintGame:
         self.initialize_color_buttons()
         self.size_buttons = []
         self.initialize_size_buttons()
+        self.eraser = buttons.Button(
+            self, self.settings.WIDTH/2, self.settings.HEIGHT/2)
+        self.eraser_on = False
 
         # initialize the pen
         self.drawings = pygame.sprite.Group()
@@ -43,14 +46,17 @@ class PaintGame:
                 mouse_pos = pygame.mouse.get_pos()  # get position of mouse to evaluate click
                 if self.check_click(mouse_pos):
                     pass
-                elif event.type == pygame.MOUSEMOTION:
-                    mouse_pos = event.pos
-                    self.draw_on_screen(mouse_pos)
+                # elif event.type == pygame.MOUSEMOTION:
+                #     mouse_pos = event.pos
+                    # self.draw_on_screen(mouse_pos)
                 else:
                     self.click = True
                     # self.pen.pen_draw(mouse_pos[0], mouse_pos[1])
                     while self.click:
-                        self.draw_on_screen(mouse_pos)
+                        if self.eraser_on == False:
+                            self.draw_on_screen(mouse_pos)
+                        else:
+                            self.eraser_collide(mouse_pos)
                         self.update_drawings()
                         self.key_up()
                         pygame.display.flip()
@@ -71,6 +77,8 @@ class PaintGame:
         self.screen.fill(self.bg_color)
         # draw buttons
         self.draw_buttons()
+        # draw an eraser
+        self.eraser.draw_button()
         # update pen drawing
         self.update_drawings()
         # update the screen with above changes
@@ -92,20 +100,27 @@ class PaintGame:
 # ----------------------------------------------
     def check_click(self, mouse_pos):
         """check if mouse clicks a button"""
-        for button in self.color_buttons:
-            button_clicked = button.rect.collidepoint(mouse_pos)
-            if button_clicked:
-                self.current_color = button.get_color()
-                # might be inefficient, but trade off to change
-                # the color of the size button
-                for button in self.size_buttons:
-                    button.set_color(self.current_color)
-                return True
-        for button in self.size_buttons:
-            button_clicked = button.border_rect.collidepoint(mouse_pos)
-            if button_clicked:
-                self.current_size = button.get_size()
-                return True
+        eraser_clicked = self.eraser.rect.collidepoint(mouse_pos)
+        if eraser_clicked:
+            self.eraser_on = True
+            print(self.eraser_on)
+        else:
+            for button in self.color_buttons:
+                button_clicked = button.rect.collidepoint(mouse_pos)
+                if button_clicked:
+                    self.eraser_on = False
+                    self.current_color = button.get_color()
+                    # might be inefficient, but trade off to change
+                    # the color of the size button
+                    for button in self.size_buttons:
+                        button.set_color(self.current_color)
+                    return True
+            for button in self.size_buttons:
+                button_clicked = button.border_rect.collidepoint(mouse_pos)
+                if button_clicked:
+                    self.current_size = button.get_size()
+                    return True
+            print(self.eraser_on)
 
         return False
 
@@ -151,6 +166,15 @@ class PaintGame:
         """draw each of the pen marks in the sprite array"""
         for draw in self.drawings.sprites():
             draw.update_pen()
+
+# -------------------------------------------------
+    def eraser_collide(self, mouse_pos):
+        """Check the collision of mouse when eraser is activated"""
+        for draw in self.drawings.sprites():
+            erased = draw.rect.collidepoint(mouse_pos)
+            if erased:
+                draw.kill()
+                # self.drawings.remove(draw)
 
 
 if __name__ == '__main__':
