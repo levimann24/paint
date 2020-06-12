@@ -103,7 +103,6 @@ class PaintGame:
         eraser_clicked = self.eraser.rect.collidepoint(mouse_pos)
         if eraser_clicked:
             self.eraser_on = True
-            print(self.eraser_on)
         else:
             for button in self.color_buttons:
                 button_clicked = button.rect.collidepoint(mouse_pos)
@@ -120,7 +119,6 @@ class PaintGame:
                 if button_clicked:
                     self.current_size = button.get_size()
                     return True
-            print(self.eraser_on)
 
         return False
 
