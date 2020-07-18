@@ -42,25 +42,16 @@ class PaintGame:
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_q:  # see if user quit game
                     sys.exit()
-            if event.type == pygame.MOUSEBUTTONDOWN:
-                mouse_pos = pygame.mouse.get_pos()  # get position of mouse to evaluate click
-                if self.check_click(mouse_pos):
-                    pass
-                # elif event.type == pygame.MOUSEMOTION:
-                #     mouse_pos = event.pos
-                    # self.draw_on_screen(mouse_pos)
+        if pygame.mouse.get_pressed()[0]:
+            mouse_pos = pygame.mouse.get_pos()  # get position of mouse to evaluate click
+            if self.check_click(mouse_pos):
+                pass
+            else:
+                self.click = True
+                if self.eraser_on == False:
+                    self.draw_on_screen(mouse_pos)
                 else:
-                    self.click = True
-                    # self.pen.pen_draw(mouse_pos[0], mouse_pos[1])
-                    while self.click:
-                        if self.eraser_on == False:
-                            self.draw_on_screen(mouse_pos)
-                        else:
-                            self.eraser_collide(mouse_pos)
-                        self.update_drawings()
-                        self.key_up()
-                        pygame.display.flip()
-                        mouse_pos = pygame.mouse.get_pos()
+                    self.eraser_collide(mouse_pos)
 
     def key_up(self):
         """check for key up events"""
